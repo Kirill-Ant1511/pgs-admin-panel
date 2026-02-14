@@ -1,3 +1,3 @@
-export function ReportPage() {
+export default function ReportPage() {
 	return <div>Reports</div>
 }
