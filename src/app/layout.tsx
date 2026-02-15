@@ -29,7 +29,7 @@ export default function RootLayout({
 			>
 				<Header />
 				<main className='w-full h-full flex place-content-center'>
-					<div className='w-1/2 max-lg:w-9/10 flex justify-center bg-white p-3 rounded-xl mt-5'>
+					<div className='w-1/2 max-lg:w-9/10 flex justify-center bg-white p-5 rounded-xl mt-5'>
 						{children}
 					</div>
 				</main>

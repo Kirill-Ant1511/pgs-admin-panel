@@ -28,7 +28,7 @@ export function CreateForm() {
 	}
 
 	const onSubmit = async (data: Input) => {
-		console.log(data)
+		console.log(data)	
 		await createPlot(data.name)
 		await getPlots(null)
 		closeWindow()
