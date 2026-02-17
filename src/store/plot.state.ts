@@ -6,7 +6,7 @@ interface PlotState {
 	plots: Plot[]
 	selectedPlot: Plot | null
 	loading: boolean
-	getPlots: (nameSubstring: string | null) => Promise<void>
+	getPlots: (nameSubstring?: string) => Promise<void>
 	getPlotById: (id: number) => Promise<void>
 	createPlot: (name: string) => Promise<void>
 	editPlot: (id: number, name: string) => Promise<void>
@@ -19,7 +19,7 @@ export const usePlot = create<PlotState>(set => ({
 	plots: [],
 	selectedPlot: null,
 	loading: false,
-	getPlots: async (nameSubstring: string | null) => {
+	getPlots: async (nameSubstring?: string) => {
 		try {
 			set({ loading: true })
 			var response = await axios.get(BACKEND_BASE_URL + '/plot', {

@@ -92,7 +92,7 @@ export function EditTypeWorkForm({ id }: Props) {
 					/>
 				</Field>
 
-				<Button type='submit'>Создать</Button>
+				<Button type='submit'>Сохранить</Button>
 			</form>
 		</ModalBackground>
 	)

@@ -6,7 +6,7 @@ interface TypeWorkState {
 	typeWorks: TypeWork[]
 	selectedTypeWork: TypeWork | null
 	loading: boolean
-	getAllTypeWorks: () => Promise<void>
+	getAllTypeWorks: (name?: string, code?: string) => Promise<void>
 	getTypeWorkById: (id: number) => Promise<void>
 	createTypeWork: (code: string, name: string) => Promise<void>
 	updateTypeWork: (id: number, code: string, name: string) => Promise<void>
@@ -19,11 +19,16 @@ export const useTypeWork = create<TypeWorkState>(set => ({
 	typeWorks: [],
 	selectedTypeWork: null,
 	loading: false,
-	getAllTypeWorks: async () => {
+	getAllTypeWorks: async (name?: string, code?: string) => {
 		try {
 			console.log(process.env.BACKEND_HOST)
 			set({ loading: true })
-			const response = await axios.get(BACKEND_BASE_URL + '/type-work')
+			const response = await axios.get(BACKEND_BASE_URL + '/type-work', {
+				params: {
+					name: name,
+					code: code
+				}
+			})
 			if (response.status === 200)
 				set({ typeWorks: response.data as TypeWork[] })
 			console.log(response.data)
