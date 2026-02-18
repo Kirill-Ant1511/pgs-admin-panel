@@ -20,21 +20,23 @@ export function PlotsTable() {
 	const [nameSubstring, setNameSubstring] = useState<string>('')
 	useEffect(() => {
 		const getData = async () => {
-			await getPlots(nameSubstring == '' ? null : nameSubstring)
+			await getPlots(nameSubstring)
 		}
 		getData()
 	}, [])
 	if (loading) return <div>Loading...</div>
 
 	const getPlotByFilter = async () => {
-		await getPlots(nameSubstring === '' ? null : nameSubstring)
+		await getPlots(nameSubstring)
 	}
 
 	const resetFilters = async () => {
 		setNameSubstring('')
-		await getPlots(null)
+		await getPlots()
 	}
 
+	if (loading) return <div>Загрузка...</div>
+	else if (plots.length === 0) return <div>Участки отсутствуют</div>
 	return (
 		<>
 			<div className='p-3 border border-accent-foreground bg-accent-foreground/20 rounded-xl space-y-3 mb-5'>
@@ -71,15 +73,15 @@ export function PlotsTable() {
 								<TableCell className='text-center'>{plot.id}</TableCell>
 								<TableCell className='text-center'>{plot.name}</TableCell>
 								<TableCell className='flex gap-2 justify-center'>
-									<DeleteDialog plot={plot} />
 									<Button variant='outline'>
 										<Link
 											href={Pages.EDIT_PLOT(plot.id)}
 											scroll={false}
 										>
-											<Edit size={22} />
+											<Edit size={20} />
 										</Link>
 									</Button>
+									<DeleteDialog plot={plot} />
 								</TableCell>
 							</TableRow>
 						))}

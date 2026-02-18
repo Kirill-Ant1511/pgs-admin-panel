@@ -18,17 +18,17 @@ export function DeleteDialog({ plot }: Props) {
 
 	const deletePlotHandler = async () => {
 		await deletePlot(plot.id)
-		await getPlots(null)
+		await getPlots()
 	}
 
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
 				<Button
-					className='text-red-500'
-					variant='outline'
+					className=''
+					variant='destructive'
 				>
-					<Trash size={22} />
+					<Trash size={20} />
 				</Button>
 			</DialogTrigger>
 			<DialogContent>
