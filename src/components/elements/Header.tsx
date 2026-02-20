@@ -9,7 +9,7 @@ export function Header() {
 	const pathname = usePathname()
 	return (
 		<header className='flex gap-2 p-2 place-content-center'>
-			<div className='rounded-xl bg-accent-background p-4 w-1/2 max-lg:w-9/10 shadow-2xl'>
+			<div className='rounded-xl bg-accent-background p-4 w-3/4 max-lg:w-9/10 shadow-2xl'>
 				<div className='flex gap-2 items-center '>
 					<Image
 						src='/logo.png'

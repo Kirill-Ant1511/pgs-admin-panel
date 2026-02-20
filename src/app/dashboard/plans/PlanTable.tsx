@@ -12,6 +12,7 @@ import { useTypeWork } from "@/store/type-work.state";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { DeleteDialog } from "./DeleteDialog";
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/constants/pagination";
 
 
 interface FilterInput {
@@ -23,9 +24,6 @@ interface FilterInput {
     page: number
     size: number
 }
-
-const BASE_PAGE = 0
-const BASE_SIZE = 10
 
 export function PlanTable() {
     const {plans, getAllPlans} = usePlan()
@@ -47,8 +45,8 @@ export function PlanTable() {
                 subtypeWorkId: null,
                 productionName: null,
                 isActive: null,
-                page: BASE_PAGE,
-                size: BASE_SIZE,
+                page: DEFAULT_PAGE,
+                size: DEFAULT_PAGE_SIZE,
             }
         }
     )
@@ -58,7 +56,7 @@ export function PlanTable() {
 
     useEffect(() => {
         const getData = async () => {
-            await getAllPlans(BASE_PAGE, BASE_SIZE)
+            await getAllPlans(DEFAULT_PAGE, DEFAULT_PAGE_SIZE)
             await getPlots()
             await getAllTypeWorks()
         }
@@ -242,9 +240,7 @@ export function PlanTable() {
                 </form>
 			</div>
             { plans.length === 0 ? (
-				<div>
-					Нет данных
-				</div>
+				<div className='w-full h-40 flex items-center justify-center text-muted-foreground'>Нет данных для отображения</div>
 			) :
 			<Table className='w-full'>
 				<TableHeader>

@@ -36,7 +36,6 @@ export function PlotsTable() {
 	}
 
 	if (loading) return <div>Загрузка...</div>
-	else if (plots.length === 0) return <div>Участки отсутствуют</div>
 	return (
 		<>
 			<div className='p-3 border border-accent-foreground bg-accent-foreground/20 rounded-xl space-y-3 mb-5'>
@@ -58,7 +57,9 @@ export function PlotsTable() {
 					</Button>
 				</div>
 			</div>
-			<Table className='w-full'>
+			{ plots.length === 0 
+			? <div className='w-full h-40 flex items-center justify-center text-muted-foreground'>Нет данных для отображения</div> 
+			: <Table className='w-full'>
 				<TableHeader>
 					<TableRow>
 						<TableHead className='text-center'>ID</TableHead>
@@ -87,6 +88,7 @@ export function PlotsTable() {
 						))}
 				</TableBody>
 			</Table>
+			}
 		</>
 	)
 }

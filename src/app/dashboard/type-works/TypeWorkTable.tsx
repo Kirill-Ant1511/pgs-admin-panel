@@ -41,7 +41,6 @@ export function TypeWorkTable() {
 	}
 
 	if (loading) return <div>Загрузка...</div>
-	else if (typeWorks.length === 0) return <div>Виды работ отсутствуют</div>
 	return (
 		<>
 			<section>
@@ -73,7 +72,9 @@ export function TypeWorkTable() {
 					</div>
 				</div>
 			</section>
-			<Table>
+			{ typeWorks.length === 0 
+			? <div className='w-full h-40 flex items-center justify-center text-muted-foreground'>Нет данных для отображения</div> 
+			: <Table>
 				<TableHeader>
 					<TableRow>
 						<TableHead>ID</TableHead>
@@ -100,6 +101,7 @@ export function TypeWorkTable() {
 					))}
 				</TableBody>
 			</Table>
+			}
 		</>
 	)
 }

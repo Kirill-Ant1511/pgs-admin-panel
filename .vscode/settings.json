@@ -2,6 +2,5 @@
 	"workbench.secondarySideBar.defaultVisibility": "visibleInWorkspace",
 	"workbench.secondarySideBar.forceMaximized": true,
 	"terminal.integrated.tabs.defaultIcon": "github",
-	"dart.flutterOutline": false,
-	"dart.flutterWidgetPreviewLocation": "beside"
+	"vscode-pets.theme": "forest"
 }

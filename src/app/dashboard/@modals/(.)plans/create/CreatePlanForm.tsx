@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/constants/pagination"
 import { usePlan } from "@/store/plan.store"
 import { usePlot } from "@/store/plot.state"
 import { useSubtypeWork } from "@/store/subtype-work.state"
@@ -78,8 +79,7 @@ export function CreatePlanForm() {
     if (data.productionName === "") data.productionName = null
     data.volume = Number(data.volume)
     await createPlan(data.plotId, data.typeWorkId, data.subtypeWorkId, data.volume, data.productionName, data.startDate, data.endDate)
-    await getAllPlans(0, 10)
-    console.log(data)
+    await getAllPlans(DEFAULT_PAGE, DEFAULT_PAGE_SIZE)
     closeModal()
   }
 
