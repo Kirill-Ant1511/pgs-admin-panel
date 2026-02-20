@@ -6,8 +6,10 @@ interface PlanState {
     plans: Plan[]
     selectedPlan: Plan | null
     loading: boolean
-    getAllPlans: (pageNumber: number, pageSize: number, plotId?: number, typeWorkId?: number, subtypeWorkId?: number, productionName?: string, isActive?: boolean) => Promise<void>
+    getAllPlans: (pageNumber: number, pageSize: number, plotId?: number | null, typeWorkId?: number | null, subtypeWorkId?: number | null, productionName?: string | null, isActive?: boolean | null) => Promise<void>
     getPlanById: (id: number) => Promise<void>
+    createPlan: (plotId: number, typeWorkId: number, subtypeWorkId: number, volume: number, productionName?: string | null, startDate?: Date | null, endDate?: Date | null) => Promise<void>
+    deletePlan: (id: number) => Promise<void>
 }
 
 
@@ -40,5 +42,36 @@ export const usePlan = create<PlanState>(set => ({
         }
     },
     getPlanById: async (id: number) => {
+    },
+    createPlan: async (plotId: number, typeWorkId: number, subtypeWorkId: number, volume: number, productionName?: string | null, startDate?: Date | null, endDate?: Date | null) => { 
+        try {
+            set({loading: true})
+            const data = {
+                plotId: plotId,
+                typeWorkId: typeWorkId,
+                subtypeWorkId: subtypeWorkId,
+                volume: volume,
+                productionName: productionName,
+                startDate: startDate,
+                endDate: endDate
+            }
+            const response = await axios.post(BACKEND_URL, data)
+            if (response.status === 200) console.log(response.data)
+        } catch (error) {
+            console.log(error)
+        } finally {
+            set({loading: false})
+        }
+    },
+    deletePlan: async (id: number) => {
+        try {
+            set({loading: true})
+            const response = await axios.delete(`${BACKEND_URL}/${id}`)
+            if (response.status === 200) console.log(response.data)
+        } catch (error) {
+            console.log(error)
+        } finally {
+            set({loading: false})
+        }
     }
 }))
