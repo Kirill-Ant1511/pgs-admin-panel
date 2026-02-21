@@ -7,7 +7,7 @@ interface ReportState {
     selectedReport: Report | null
     loading: boolean
     getAllReports: (page: number, pageSize: number, plotId?: number | null, typeWorkId?: number | null, subtypeWorkId?: number | null, productionName?: string | null, startDate?: string | null, endDate?: string | null) => Promise<void>
-
+    sendReport: (planId: number, fact: number, date: string, whoSend?: string | null, machine?: string | null, comment?: string | null) => Promise<void>
 }
 
 
@@ -37,6 +37,25 @@ export const useReport = create<ReportState>((set) => ({
             console.log(error)
         } finally {
             set({ loading: false })
+        }
+    },
+    sendReport: async (planId, fact, date, whoSend, machine, comment) => {
+        try {
+            const body = {
+                planId: planId,
+                fact: fact,
+                date: date,
+                whoSend: whoSend,
+                machine: machine,
+                comment: comment
+            }
+            const response = await axios.post(BACKEND_URL, body)
+            if (response.status === 200) {
+                alert('Отчет успешно отправлен')
+            }
+        } catch (error) {
+            console.log(error)
+            alert('Ошибка при отправке отчета')
         }
     }
 }))

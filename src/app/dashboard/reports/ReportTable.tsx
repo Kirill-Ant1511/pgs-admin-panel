@@ -245,6 +245,7 @@ export default function ReportTable() {
                         <TableHead>Дельта</TableHead>
                         <TableHead>Дата отправки</TableHead>
                         <TableHead>Кто отправил</TableHead>
+                        <TableHead>Станок</TableHead>
                         <TableHead>Комментарий</TableHead>
 					</TableRow>
 				</TableHeader>
@@ -262,6 +263,7 @@ export default function ReportTable() {
 								<TableCell>{report.delta}</TableCell>
 								<TableCell>{report.date}</TableCell>
 								<TableCell>{report.whoSend}</TableCell>
+								<TableCell>{report.machine}</TableCell>
 								<TableCell>{report.comment}</TableCell>
 							</TableRow>
 						))

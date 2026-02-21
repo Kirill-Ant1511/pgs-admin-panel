@@ -13,6 +13,9 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { DeleteDialog } from "./DeleteDialog";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/constants/pagination";
+import Link from "next/link";
+import { Pages } from "@/constants/page";
+import { Edit } from "lucide-react";
 
 
 interface FilterInput {
@@ -272,6 +275,11 @@ export function PlanTable() {
                                 <TableCell>{plan.endDate}</TableCell>
                                 <TableCell>{plan.isActive ? 'Active' : 'Inactive'}</TableCell>
                                 <TableCell className="flex justify-end">
+                                    <Button variant="outline" size="sm" className="mr-2">
+                                        <Link href={Pages.EDIT_PLAN(plan.id)}>
+                                            <Edit size={20} />
+                                        </Link>
+                                    </Button>
                                     <DeleteDialog plan={plan} />
                                 </TableCell>
                             </TableRow>

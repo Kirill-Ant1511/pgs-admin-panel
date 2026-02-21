@@ -7,6 +7,7 @@ interface SubtypeWorkState {
     loading: boolean
     selectedSubtypeWork: SubtypeWork | null
     getAllSubtypeWorks: (page: number, size: number, name?: string | null, code?: string | null, typeWorkId?: number | null) => Promise<void>
+    getPlaningSubtypeWorks: (plotId: number, typeWorkId: number) => Promise<void>
     getSubtypeWorkById: (id: number) => Promise<void>
     getSubtypeWorkByTypeWorkId: (typeWorkId: number) => Promise<void>
     createSubtypeWork: (code: string, name: string, unitMetering: string, typeWorkId: number) => Promise<void>
@@ -32,6 +33,22 @@ export const useSubtypeWork = create<SubtypeWorkState>(set => ({
                 typeWorkId: typeWorkId
             }
             const response = await axios.get(BACKEND_BASE_URL + '/with-filters', { params })
+            if (response.status === 200)
+                set({ subtypeWorks: response.data as SubtypeWork[] })
+        } catch (error) {
+            console.log(error)
+        } finally  {
+            set({ loading: false })
+        }
+    },
+    getPlaningSubtypeWorks: async (plotId: number, typeWorkId: number) => {
+        try {
+            set({ loading: true })
+            const params = {
+                plotId: plotId,
+                typeWorkId: typeWorkId
+            }
+            const response = await axios.get(BACKEND_BASE_URL + '/planing', { params })
             if (response.status === 200)
                 set({ subtypeWorks: response.data as SubtypeWork[] })
         } catch (error) {

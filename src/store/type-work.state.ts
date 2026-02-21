@@ -7,6 +7,7 @@ interface TypeWorkState {
 	selectedTypeWork: TypeWork | null
 	loading: boolean
 	getAllTypeWorks: (name?: string, code?: string) => Promise<void>
+	getPlaningTypeWorks: (plotId: number) => Promise<void>
 	getTypeWorkById: (id: number) => Promise<void>
 	createTypeWork: (code: string, name: string) => Promise<void>
 	updateTypeWork: (id: number, code: string, name: string) => Promise<void>
@@ -27,6 +28,23 @@ export const useTypeWork = create<TypeWorkState>(set => ({
 				params: {
 					name: name,
 					code: code
+				}
+			})
+			if (response.status === 200)
+				set({ typeWorks: response.data as TypeWork[] })
+			console.log(response.data)
+		} catch (error) {
+			console.log(error)
+		} finally {
+			set({ loading: false })
+		}
+	},
+	getPlaningTypeWorks: async (plotId: number) => {
+		try {
+			set({ loading: true })
+			const response = await axios.get(BACKEND_BASE_URL + '/type-work/planing', {
+				params: {
+					plotId: plotId
 				}
 			})
 			if (response.status === 200)

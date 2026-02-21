@@ -4,11 +4,13 @@ import { create } from "zustand";
 
 interface PlanState {
     plans: Plan[]
+    planingPlan: Plan[] | null
     selectedPlan: Plan | null
     loading: boolean
     getAllPlans: (pageNumber: number, pageSize: number, plotId?: number | null, typeWorkId?: number | null, subtypeWorkId?: number | null, productionName?: string | null, isActive?: boolean | null) => Promise<void>
     getPlanById: (id: number) => Promise<void>
     createPlan: (plotId: number, typeWorkId: number, subtypeWorkId: number, volume: number, productionName?: string | null, startDate?: Date | null, endDate?: Date | null) => Promise<void>
+    updatePlan: (id: number, plotId: number, typeWorkId: number, subtypeWorkId: number, volume: number, isActive: boolean, productionName?: string | null, startDate?: Date | null, endDate?: Date | null) => Promise<void>
     deletePlan: (id: number) => Promise<void>
 }
 
@@ -18,8 +20,9 @@ const BACKEND_URL = "http://localhost:8080/plan";
 export const usePlan = create<PlanState>(set => ({
     plans: [],
     selectedPlan: null,
+    planingPlan: null,
     loading: false,
-    getAllPlans: async (pageNumber: number, pageSize: number, plotId?: number, typeWorkId?: number, subtypeWorkId?: number, productionName?: string, isActive?: boolean) => { 
+    getAllPlans: async (pageNumber: number, pageSize: number, plotId?: number | null, typeWorkId?: number | null, subtypeWorkId?: number | null, productionName?: string | null, isActive?: boolean | null) => { 
         try {
             set({ loading: true })
             let response = await axios.get(BACKEND_URL, {
@@ -33,7 +36,7 @@ export const usePlan = create<PlanState>(set => ({
                     isActive: isActive
                 }
             })
-            if (response.status === 200) set({  plans: response.data as Plan[] })
+            if (response.status === 200) set({  plans: response.data as Plan[], planingPlan: response.data as Plan[] })
             console.log(response.data)
         } catch (error) {
             console.log(error)
@@ -42,6 +45,16 @@ export const usePlan = create<PlanState>(set => ({
         }
     },
     getPlanById: async (id: number) => {
+        try {
+            set({ loading: true })
+            let response = await axios.get(`${BACKEND_URL}/${id}`)
+            if (response.status === 200) set({ selectedPlan: response.data as Plan })
+            console.log(response.data)
+        } catch (error) {
+            console.log(error)
+        } finally {
+            set({ loading: false })
+        }
     },
     createPlan: async (plotId: number, typeWorkId: number, subtypeWorkId: number, volume: number, productionName?: string | null, startDate?: Date | null, endDate?: Date | null) => { 
         try {
@@ -56,7 +69,28 @@ export const usePlan = create<PlanState>(set => ({
                 endDate: endDate
             }
             const response = await axios.post(BACKEND_URL, data)
-            if (response.status === 200) console.log(response.data)
+            if (response.status === 200) set(state => ({ plans: [...state.plans, response.data as Plan] }))
+        } catch (error) {
+            console.log(error)
+        } finally {
+            set({loading: false})
+        }
+    },
+    updatePlan: async (id: number, plotId: number, typeWorkId: number, subtypeWorkId: number, volume: number, isActive: boolean, productionName?: string | null, startDate?: Date | null, endDate?: Date | null) => {
+        try {
+            set({loading: true})
+            const data = {
+                plotId: plotId,
+                typeWorkId: typeWorkId,
+                subtypeWorkId: subtypeWorkId,
+                volume: volume,
+                productionName: productionName,
+                startDate: startDate,
+                endDate: endDate,
+                isActive: isActive
+            }
+            const response = await axios.patch(`${BACKEND_URL}/${id}`, data)
+            if (response.status === 200) set(state => ({ selectedPlan: response.data as Plan, plans: state.plans.map(p => p.id === id ? response.data as Plan : p) }))
         } catch (error) {
             console.log(error)
         } finally {
@@ -67,7 +101,7 @@ export const usePlan = create<PlanState>(set => ({
         try {
             set({loading: true})
             const response = await axios.delete(`${BACKEND_URL}/${id}`)
-            if (response.status === 200) console.log(response.data)
+            if (response.status === 200) set(state => ({ plans: state.plans.filter(p => p.id !== id) }))
         } catch (error) {
             console.log(error)
         } finally {

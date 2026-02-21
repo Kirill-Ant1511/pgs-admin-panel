@@ -7,6 +7,7 @@ interface PlotState {
 	selectedPlot: Plot | null
 	loading: boolean
 	getPlots: (nameSubstring?: string) => Promise<void>
+	getPlaningPlots: () => Promise<void>
 	getPlotById: (id: number) => Promise<void>
 	createPlot: (name: string) => Promise<void>
 	editPlot: (id: number, name: string) => Promise<void>
@@ -25,6 +26,19 @@ export const usePlot = create<PlotState>(set => ({
 			var response = await axios.get(BACKEND_BASE_URL + '/plot', {
 				params: { nameSubstring: nameSubstring }
 			})
+			if (response.status === 200) set({ plots: response.data as Plot[] })
+			console.log(response.data)
+		} catch (err) {
+			console.log(err)
+			console.error('Error fetching plots:', err)
+		} finally {
+			set({ loading: false })
+		}
+	},
+	getPlaningPlots: async () => {
+		try {
+			set({ loading: true })
+			var response = await axios.get(BACKEND_BASE_URL + '/plot/planing')
 			if (response.status === 200) set({ plots: response.data as Plot[] })
 			console.log(response.data)
 		} catch (err) {

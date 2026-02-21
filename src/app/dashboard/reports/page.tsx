@@ -11,7 +11,7 @@ export default function ReportPage() {
 				<h1 className='text-xl font-semibold'>Отчёты</h1>
 				<Button>
 					<Link
-						href={Pages.REPORTS}
+						href={Pages.CREATE_REPORT}
 						className='flex items-center gap-1'
 					>
 						<Plus size={20} />
