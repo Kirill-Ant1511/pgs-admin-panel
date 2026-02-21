@@ -57,7 +57,6 @@ export function EditForm({ id }: Props) {
 	const onSubmit = async (data: Input) => {
 		console.log(data)
 		await editPlot(id, data.name)
-		await getPlots(null)
 		closeWindow()
 	}
 
