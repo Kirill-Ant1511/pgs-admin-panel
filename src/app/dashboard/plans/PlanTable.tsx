@@ -228,7 +228,7 @@ export function PlanTable() {
                         <Button type='submit'>Поиск</Button>
                         <Button
                             onClick={() => {
-                                getAllPlans(BASE_PAGE, BASE_SIZE)
+                                getAllPlans(DEFAULT_PAGE, DEFAULT_PAGE_SIZE)
                                 reset()
                             }}
                             variant='secondary'
