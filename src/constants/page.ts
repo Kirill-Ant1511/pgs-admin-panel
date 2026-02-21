@@ -13,6 +13,7 @@ export class Pages {
 
 	static SUBTYPE_WORKS = this.DASHBOARD + '/subtype-works'
 	static CREATE_SUBTYPE_WORK = this.SUBTYPE_WORKS + '/create'
+	static EDIT_SUBTYPE_WORK = (id: number) => this.SUBTYPE_WORKS + '/' + id + '/edit'
 	static PLANS = this.DASHBOARD + '/plans'
 	static CREATE_PLAN = this.PLANS + '/create'
 	static REPORTS = this.DASHBOARD + '/reports'

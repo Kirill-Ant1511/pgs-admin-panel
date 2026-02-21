@@ -11,6 +11,9 @@ import { useTypeWork } from "@/store/type-work.state"
 import { useEffect } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { DeleteDialog } from "./DeleteDialog"
+import { Edit } from "lucide-react"
+import Link from "next/link"
+import { Pages } from "@/constants/page"
 
 
 interface FilterInputs {
@@ -155,6 +158,14 @@ export function SubtypeWorkTable() {
 								<TableCell className='text-center'>{subtypeWork.name}</TableCell>
                                 <TableCell className='text-center'>{subtypeWork.typeWorkId}</TableCell>
 								<TableCell className='flex gap-2 justify-center'>
+                                    <Button
+                                        variant='outline'
+                                        size='sm'
+                                    >
+                                        <Link href={Pages.EDIT_SUBTYPE_WORK(subtypeWork.id)}>
+                                            <Edit size={20} />
+                                        </Link>
+                                    </Button>
 									<DeleteDialog subtypeWork={subtypeWork} />
 								</TableCell>
 							</TableRow>
