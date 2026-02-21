@@ -53,7 +53,7 @@ export const usePlot = create<PlotState>(set => ({
 			var response = await axios.post(BACKEND_BASE_URL + '/plot', {
 				name: name
 			})
-			if (response.status === 200) set({ plots: response.data as Plot[] })
+			if (response.status === 200) set(state => ({ plots: [...state.plots, response.data as Plot] }))
 			console.log(response.data)
 		} catch (err) {
 			console.log(err)
@@ -68,7 +68,7 @@ export const usePlot = create<PlotState>(set => ({
 			var response = await axios.patch(BACKEND_BASE_URL + `/plot/${id}`, {
 				name: name
 			})
-			if (response.status === 200) set({ selectedPlot: response.data as Plot })
+			if (response.status === 200) set(state => ({ selectedPlot: response.data as Plot, plots: state.plots.map(p => p.id === id ? response.data as Plot : p) }))
 			console.log(response.data)
 		} catch (err) {
 			console.log(err)
@@ -79,7 +79,7 @@ export const usePlot = create<PlotState>(set => ({
 		try {
 			set({ loading: true })
 			var response = await axios.delete(BACKEND_BASE_URL + '/plot' + `/${id}`)
-			if (response.status === 200) set({ loading: false })
+			if (response.status === 200) set(state => ({ plots: state.plots.filter(p => p.id !== id) }))
 			console.log(response.data)
 		} catch (err) {
 			console.log(err)

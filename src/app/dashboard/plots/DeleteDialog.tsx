@@ -18,7 +18,6 @@ export function DeleteDialog({ plot }: Props) {
 
 	const deletePlotHandler = async () => {
 		await deletePlot(plot.id)
-		await getPlots(null)
 	}
 
 	return (
@@ -40,7 +39,7 @@ export function DeleteDialog({ plot }: Props) {
 				<div className='w-full mt-2 space-y-5'>
 					<p>Вы уверены что хотите удалить участок: "{plot.name}"</p>
 					<Button
-						onClick={deletePlotHandler}
+						onClick={() => deletePlot(plot.id)}
 						className='w-fit'
 						variant='destructive'
 					>
