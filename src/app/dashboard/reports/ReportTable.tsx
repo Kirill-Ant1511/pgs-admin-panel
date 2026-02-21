@@ -19,6 +19,7 @@ import { useSubtypeWork } from '@/store/subtype-work.state'
 import { useTypeWork } from '@/store/type-work.state'
 import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { DeleteDialog } from './DeleteDialog'
 
 
 interface FilterInputs {
@@ -247,6 +248,7 @@ export default function ReportTable() {
                         <TableHead>Кто отправил</TableHead>
                         <TableHead>Станок</TableHead>
                         <TableHead>Комментарий</TableHead>
+                        <TableHead>Действия</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
@@ -265,6 +267,9 @@ export default function ReportTable() {
 								<TableCell>{report.whoSend}</TableCell>
 								<TableCell>{report.machine}</TableCell>
 								<TableCell>{report.comment}</TableCell>
+                                <TableCell>
+                                    <DeleteDialog report={report} />
+                                </TableCell>
 							</TableRow>
 						))
 					}
