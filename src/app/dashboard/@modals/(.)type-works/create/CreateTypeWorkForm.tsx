@@ -32,11 +32,8 @@ export function CreateTypeWorkForm() {
 	}
 
 	const onSubmit = async (data: Input) => {
-		data.code = data.code.toUpperCase()
-		await createTypeWork(data.code, data.name)
-		await getAllTypeWorks()
+		await createTypeWork(data.code.toUpperCase(), data.name)
 		closeModal()
-		console.log(data)
 	}
 
 	useEffect(() => {

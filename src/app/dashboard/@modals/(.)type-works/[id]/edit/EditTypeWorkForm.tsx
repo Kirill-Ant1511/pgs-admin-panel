@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Field, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { ModalBackground } from '@/components/ui/modal-background'
+import { Pages } from '@/constants/page'
 import { useTypeWork } from '@/store/type-work.state'
 import { X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -51,7 +52,7 @@ export function EditTypeWorkForm({ id }: Props) {
 	}, [selectedTypeWork, setValue])
 
 	const onSubmit = async (data: Input) => {
-		await updateTypeWork(id, data.code, data.name)
+		await updateTypeWork(id, data.code.toUpperCase(), data.name)
 		await getAllTypeWorks()
 		closeModal()
 	}

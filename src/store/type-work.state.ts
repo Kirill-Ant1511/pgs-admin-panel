@@ -58,7 +58,7 @@ export const useTypeWork = create<TypeWorkState>(set => ({
 				code,
 				name
 			})
-			if (response.status === 200) console.log(response.data)
+			if (response.status === 200) set(state => ({ typeWorks: [...state.typeWorks, response.data as TypeWork] }))
 		} catch (error) {
 			console.log(error)
 		} finally {
@@ -75,7 +75,7 @@ export const useTypeWork = create<TypeWorkState>(set => ({
 					name: name === '' ? null : name
 				}
 			)
-			if (response.status === 200) console.log(response.data)
+			if (response.status === 200) set(state => ({ typeWorks: state.typeWorks.map(tw => tw.id === id ? response.data as TypeWork : tw) }))
 		} catch (error) {
 			console.log(error)
 		} finally {
@@ -86,7 +86,7 @@ export const useTypeWork = create<TypeWorkState>(set => ({
 		try {
 			set({ loading: true })
 			const response = await axios.delete(BACKEND_BASE_URL + '/type-work/' + id)
-			if (response.status === 200) console.log(response.data)
+			if (response.status === 200) set(state => ({ typeWorks: state.typeWorks.filter(tw => tw.id !== id) }))
 		} catch (error) {
 			console.log(error)
 		} finally {

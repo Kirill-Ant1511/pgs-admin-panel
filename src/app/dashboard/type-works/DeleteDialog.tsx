@@ -15,11 +15,7 @@ interface Props {
 }
 
 export function DeleteDialog({ typeWork }: Props) {
-	const { getAllTypeWorks, deleteTypeWork } = useTypeWork()
-	const deleteTypeWorkHandler = async () => {
-		await deleteTypeWork(typeWork.id)
-		await getAllTypeWorks()
-	}
+	const { deleteTypeWork } = useTypeWork()
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
@@ -34,9 +30,9 @@ export function DeleteDialog({ typeWork }: Props) {
 					</DialogTitle>
 				</DialogHeader>
 				<div className='w-full mt-2 space-y-5'>
-					<p>Вы уверены что хотите удалить участок: "{typeWork.name}"</p>
+					<p>Вы уверены что хотите удалить вид работ: "{typeWork.name}"</p>
 					<Button
-						onClick={deleteTypeWorkHandler}
+						onClick={async () => await deleteTypeWork(typeWork.id)}
 						className='w-fit'
 						variant='destructive'
 					>
