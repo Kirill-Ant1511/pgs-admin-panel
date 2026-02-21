@@ -32,7 +32,6 @@ export const useReport = create<ReportState>((set) => ({
             }
             const response = await axios.get(BACKEND_URL, {params: params})
             if (response.status === 200) set({ reports: response.data as Report[] })
-            console.log(response.data)
         } catch (error) {
             console.log(error)
         } finally {

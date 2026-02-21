@@ -34,7 +34,7 @@ export function CreateReportForm() {
     const {plots, getPlaningPlots} = usePlot()
     const {typeWorks, getPlaningTypeWorks} = useTypeWork()
     const {subtypeWorks, getPlaningSubtypeWorks} = useSubtypeWork()
-    const {plans, planingPlan, getAllPlans} = usePlan()
+    const {plans, selectedPlan, getPlanByFK, getAllPlans} = usePlan()
     const {
         register,
         control,
@@ -42,6 +42,7 @@ export function CreateReportForm() {
         watch
     } = useForm<Input>({
         defaultValues: {
+            productionName: ' ',
             fact: 0,
             date: new Date().toISOString().split('T')[0],
             whoSend: '',
@@ -85,20 +86,22 @@ export function CreateReportForm() {
     useEffect(() => {
         const getPlans = async () => {
             if (selectedSubtypeWorkId) {
-                await getAllPlans(0, 100, selectedPlotId, selectedTypeWorkId, selectedSubtypeWorkId, null, null, null, true)
+                await getAllPlans(0, 100, selectedPlotId, selectedTypeWorkId, selectedSubtypeWorkId, null, true)
             }
         }
         getPlans()
     }, [selectedSubtypeWorkId])
 
     const onSubmit = async (data: Input) => {
-        console.log(data)
-        await getAllPlans(0, 10, data.plotId, data.typeWorkId, data.subtypeWorkId, data.productionName === " " ? "" : data.productionName, true)
-        if (planingPlan && planingPlan.length > 0) {
-            await sendReport(planingPlan[0].id, data.fact, data.date, data.whoSend, data.machine, data.comment)
-        } else {
-            alert('Нет плана для данного отчета')
+        data.productionName = data.productionName === " " ? "" : data.productionName
+        await getPlanByFK(data.plotId, data.typeWorkId, data.subtypeWorkId, data.productionName, true)
+        console.log(selectedPlan)
+        if (selectedPlan) {
+            console.log(selectedPlan.id, data.fact, data.date, data.whoSend, data.machine, data.comment)
+            await sendReport(selectedPlan.id, data.fact, data.date, data.whoSend, data.machine, data.comment)
         }
+        else alert('План не найден, невозможно отправить отчет')
+        closeModal()
     }
 
     const closeModal = () => {
