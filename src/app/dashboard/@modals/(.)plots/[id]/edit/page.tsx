@@ -1,10 +1,10 @@
-import { EditForm } from './EditForm'
+import { EditForm } from "./EditForm";
 
 interface Props {
-	params: Promise<{ id: number }>
+    params: Promise<{ id: number }>;
 }
 
 export default async function PlotEditModal({ params }: Props) {
-	const { id } = await params
-	return <EditForm id={id} />
+    const { id } = await params;
+    return <EditForm id={id} />;
 }

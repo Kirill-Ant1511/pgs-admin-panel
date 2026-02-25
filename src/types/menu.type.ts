@@ -1,7 +1,7 @@
-import { LucideIcon } from 'lucide-react'
+import { LucideIcon } from "lucide-react";
 
 export type MenuItem = {
-	name: string
-	path: string
-	icon: LucideIcon
-}
+    name: string;
+    path: string;
+    icon: LucideIcon;
+};

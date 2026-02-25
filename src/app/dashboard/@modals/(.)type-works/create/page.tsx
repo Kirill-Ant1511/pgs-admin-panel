@@ -1,5 +1,5 @@
-import { CreateTypeWorkForm } from './CreateTypeWorkForm'
+import { CreateTypeWorkForm } from "./CreateTypeWorkForm";
 
 export default function CreateTypeWorkModal() {
-	return <CreateTypeWorkForm />
+    return <CreateTypeWorkForm />;
 }

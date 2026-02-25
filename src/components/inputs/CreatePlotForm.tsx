@@ -1,3 +1,3 @@
 export function CreatePlotForm() {
-  return <div>CreatePlotForm</div>
+    return <div>CreatePlotForm</div>;
 }

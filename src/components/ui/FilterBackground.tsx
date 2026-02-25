@@ -1,3 +1,3 @@
 export function FIlterBackground() {
-  return <div>FIlterBackground</div>
+    return <div>FIlterBackground</div>;
 }
