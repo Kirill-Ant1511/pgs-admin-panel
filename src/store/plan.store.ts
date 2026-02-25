@@ -46,7 +46,7 @@ interface PlanState {
     deletePlan: (id: number) => Promise<void>;
 }
 
-const BACKEND_URL = "http://localhost:8080/plan";
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_HOST + "/plan";
 
 export const usePlan = create<PlanState>((set) => ({
     plans: [],
@@ -77,7 +77,6 @@ export const usePlan = create<PlanState>((set) => ({
             if (response.status === 200)
                 set({
                     plans: response.data as Plan[],
-                    planingPlan: response.data as Plan[],
                 });
             console.log(response.data);
         } catch (error) {

@@ -14,8 +14,7 @@ interface PlotState {
     deletePlot: (id: number) => Promise<void>;
 }
 
-const BACKEND_BASE_URL = process.env.HOST || "http://localhost:8080" + "/plot";
-
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_HOST + "/plot";
 export const usePlot = create<PlotState>((set) => ({
     plots: [],
     selectedPlot: null,
@@ -23,7 +22,7 @@ export const usePlot = create<PlotState>((set) => ({
     getPlots: async (nameSubstring?: string) => {
         try {
             set({ loading: true });
-            var response = await axios.get(BACKEND_BASE_URL, {
+            var response = await axios.get(BACKEND_URL, {
                 params: { nameSubstring: nameSubstring },
             });
 
@@ -40,7 +39,7 @@ export const usePlot = create<PlotState>((set) => ({
     getPlaningPlots: async () => {
         try {
             set({ loading: true });
-            var response = await axios.get(BACKEND_BASE_URL + "/planing");
+            var response = await axios.get(BACKEND_URL + "/planing");
             if (response.status === 200)
                 set({ plots: response.data as Plot[] });
             console.log(response.data);
@@ -54,7 +53,7 @@ export const usePlot = create<PlotState>((set) => ({
     getPlotById: async (id: number) => {
         try {
             set({ loading: true });
-            var response = await axios.get(`${BACKEND_BASE_URL} + /${id}`);
+            var response = await axios.get(`${BACKEND_URL} + /${id}`);
             if (response.status === 200)
                 set({ selectedPlot: response.data as Plot });
             console.log(response.data);
@@ -68,7 +67,7 @@ export const usePlot = create<PlotState>((set) => ({
     createPlot: async (name: string) => {
         try {
             set({ loading: true });
-            var response = await axios.post(BACKEND_BASE_URL, {
+            var response = await axios.post(BACKEND_URL, {
                 name: name,
             });
             if (response.status === 200) {
@@ -88,7 +87,7 @@ export const usePlot = create<PlotState>((set) => ({
     editPlot: async (id: number, name: string) => {
         try {
             set({ loading: true });
-            var response = await axios.patch(BACKEND_BASE_URL + `/${id}`, {
+            var response = await axios.patch(BACKEND_URL + `/${id}`, {
                 name: name,
             });
             if (response.status === 200) {
@@ -109,7 +108,7 @@ export const usePlot = create<PlotState>((set) => ({
     deletePlot: async (id: number) => {
         try {
             set({ loading: true });
-            var response = await axios.delete(BACKEND_BASE_URL + `/${id}`);
+            var response = await axios.delete(BACKEND_URL + `/${id}`);
             if (response.status === 200) {
                 set((state) => ({
                     plots: state.plots.filter((p) => p.id !== id),

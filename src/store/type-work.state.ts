@@ -13,8 +13,7 @@ interface TypeWorkState {
     updateTypeWork: (id: number, code: string, name: string) => Promise<void>;
     deleteTypeWork: (id: number) => Promise<void>;
 }
-
-const BACKEND_BASE_URL = process.env.BACKEND_HOST || "http://localhost:8080";
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_HOST + "/type-work";
 
 export const useTypeWork = create<TypeWorkState>((set) => ({
     typeWorks: [],
@@ -24,7 +23,7 @@ export const useTypeWork = create<TypeWorkState>((set) => ({
         try {
             console.log(process.env.BACKEND_HOST);
             set({ loading: true });
-            const response = await axios.get(BACKEND_BASE_URL + "/type-work", {
+            const response = await axios.get(BACKEND_URL, {
                 params: {
                     name: name,
                     code: code,
@@ -43,14 +42,11 @@ export const useTypeWork = create<TypeWorkState>((set) => ({
     getPlaningTypeWorks: async (plotId: number) => {
         try {
             set({ loading: true });
-            const response = await axios.get(
-                BACKEND_BASE_URL + "/type-work/planing",
-                {
-                    params: {
-                        plotId: plotId,
-                    },
+            const response = await axios.get(BACKEND_URL + "/planing", {
+                params: {
+                    plotId: plotId,
                 },
-            );
+            });
             if (response.status === 200)
                 set({ typeWorks: response.data as TypeWork[] });
             console.log(response.data);
@@ -64,9 +60,7 @@ export const useTypeWork = create<TypeWorkState>((set) => ({
     getTypeWorkById: async (id: number) => {
         try {
             set({ loading: true });
-            const response = await axios.get(
-                BACKEND_BASE_URL + "/type-work/" + id,
-            );
+            const response = await axios.get(BACKEND_URL + "/" + id);
             if (response.status === 200)
                 set({ selectedTypeWork: response.data as TypeWork });
             console.log(response.data);
@@ -80,7 +74,7 @@ export const useTypeWork = create<TypeWorkState>((set) => ({
     createTypeWork: async (code: string, name: string) => {
         try {
             set({ loading: true });
-            const response = await axios.post(BACKEND_BASE_URL + "/type-work", {
+            const response = await axios.post(BACKEND_URL, {
                 code,
                 name,
             });
@@ -100,13 +94,10 @@ export const useTypeWork = create<TypeWorkState>((set) => ({
     updateTypeWork: async (id: number, code: string, name: string) => {
         try {
             set({ loading: true });
-            const response = await axios.patch(
-                BACKEND_BASE_URL + "/type-work/" + id,
-                {
-                    code: code === "" ? null : code,
-                    name: name === "" ? null : name,
-                },
-            );
+            const response = await axios.patch(BACKEND_URL + "/" + id, {
+                code: code === "" ? null : code,
+                name: name === "" ? null : name,
+            });
             if (response.status === 200) {
                 set((state) => ({
                     typeWorks: state.typeWorks.map((tw) =>
@@ -125,9 +116,7 @@ export const useTypeWork = create<TypeWorkState>((set) => ({
     deleteTypeWork: async (id: number) => {
         try {
             set({ loading: true });
-            const response = await axios.delete(
-                BACKEND_BASE_URL + "/type-work/" + id,
-            );
+            const response = await axios.delete(BACKEND_URL + "/" + id);
             if (response.status === 200) {
                 set((state) => ({
                     typeWorks: state.typeWorks.filter((tw) => tw.id !== id),

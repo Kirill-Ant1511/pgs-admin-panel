@@ -27,7 +27,7 @@ interface ReportState {
     deleteReport: (id: number) => Promise<void>;
 }
 
-const BACKEND_URL = "http://localhost:8080/report";
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_HOST + "/report";
 
 export const useReport = create<ReportState>((set) => ({
     reports: [],

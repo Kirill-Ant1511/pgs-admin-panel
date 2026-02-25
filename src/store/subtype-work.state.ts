@@ -35,7 +35,7 @@ interface SubtypeWorkState {
     deleteSubtypeWork: (id: number) => Promise<void>;
 }
 
-const BACKEND_BASE_URL = "http://localhost:8080/subtype-work";
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_HOST + "/subtype-work";
 
 export const useSubtypeWork = create<SubtypeWorkState>((set) => ({
     subtypeWorks: [],
@@ -57,10 +57,9 @@ export const useSubtypeWork = create<SubtypeWorkState>((set) => ({
                 code: code,
                 typeWorkId: typeWorkId,
             };
-            const response = await axios.get(
-                BACKEND_BASE_URL + "/with-filters",
-                { params },
-            );
+            const response = await axios.get(BACKEND_URL + "/with-filters", {
+                params,
+            });
             if (response.status === 200)
                 set({ subtypeWorks: response.data as SubtypeWork[] });
         } catch (error) {
@@ -77,7 +76,7 @@ export const useSubtypeWork = create<SubtypeWorkState>((set) => ({
                 plotId: plotId,
                 typeWorkId: typeWorkId,
             };
-            const response = await axios.get(BACKEND_BASE_URL + "/planing", {
+            const response = await axios.get(BACKEND_URL + "/planing", {
                 params,
             });
             if (response.status === 200)
@@ -92,7 +91,7 @@ export const useSubtypeWork = create<SubtypeWorkState>((set) => ({
     getSubtypeWorkById: async (id: number) => {
         try {
             set({ loading: true });
-            const response = await axios.get(BACKEND_BASE_URL + "/" + id);
+            const response = await axios.get(BACKEND_URL + "/" + id);
             if (response.status === 200)
                 set({ selectedSubtypeWork: response.data as SubtypeWork });
         } catch (error) {
@@ -106,7 +105,7 @@ export const useSubtypeWork = create<SubtypeWorkState>((set) => ({
         try {
             set({ loading: true });
             const response = await axios.get(
-                BACKEND_BASE_URL + "/by-type-work/" + typeWorkId,
+                BACKEND_URL + "/by-type-work/" + typeWorkId,
             );
             if (response.status === 200)
                 set({ subtypeWorks: response.data as SubtypeWork[] });
@@ -131,7 +130,7 @@ export const useSubtypeWork = create<SubtypeWorkState>((set) => ({
                 unitMetering: unitMetering,
                 typeWorkId: typeWorkId,
             };
-            const response = await axios.post(BACKEND_BASE_URL, body);
+            const response = await axios.post(BACKEND_URL, body);
             if (response.status === 200) {
                 set((state) => ({
                     subtypeWorks: [
@@ -163,10 +162,7 @@ export const useSubtypeWork = create<SubtypeWorkState>((set) => ({
                 unitMetering: unitMetering,
                 typeWorkId: typeWorkId,
             };
-            const response = await axios.patch(
-                BACKEND_BASE_URL + "/" + id,
-                body,
-            );
+            const response = await axios.patch(BACKEND_URL + "/" + id, body);
             if (response.status === 200) {
                 set((state) => ({
                     selectedSubtypeWork: response.data as SubtypeWork,
@@ -186,7 +182,7 @@ export const useSubtypeWork = create<SubtypeWorkState>((set) => ({
     deleteSubtypeWork: async (id: number) => {
         try {
             set({ loading: true });
-            const response = await axios.delete(BACKEND_BASE_URL + "/" + id);
+            const response = await axios.delete(BACKEND_URL + "/" + id);
             if (response.status === 200) {
                 set((state) => ({
                     subtypeWorks: state.subtypeWorks.filter(
