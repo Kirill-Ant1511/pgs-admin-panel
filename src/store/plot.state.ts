@@ -1,6 +1,6 @@
-import { Plot } from "@/types/plot.type";
-import axios from "axios";
-import { create } from "zustand";
+import { Plot } from '@/types/plot.type';
+import axios from 'axios';
+import { create } from 'zustand';
 
 interface PlotState {
     plots: Plot[];
@@ -14,7 +14,7 @@ interface PlotState {
     deletePlot: (id: number) => Promise<void>;
 }
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_HOST + "/plot";
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_HOST + '/plot';
 export const usePlot = create<PlotState>((set) => ({
     plots: [],
     selectedPlot: null,
@@ -26,12 +26,11 @@ export const usePlot = create<PlotState>((set) => ({
                 params: { nameSubstring: nameSubstring },
             });
 
-            if (response.status === 200)
-                set({ plots: response.data as Plot[] });
+            if (response.status === 200) set({ plots: response.data as Plot[] });
             console.log(response.data);
         } catch (err) {
-            alert("Не удалось получить участки");
-            console.error("Error fetching plots:", err);
+            alert('Не удалось получить участки');
+            console.error('Error fetching plots:', err);
         } finally {
             set({ loading: false });
         }
@@ -39,13 +38,12 @@ export const usePlot = create<PlotState>((set) => ({
     getPlaningPlots: async () => {
         try {
             set({ loading: true });
-            var response = await axios.get(BACKEND_URL + "/planing");
-            if (response.status === 200)
-                set({ plots: response.data as Plot[] });
+            var response = await axios.get(BACKEND_URL + '/planing');
+            if (response.status === 200) set({ plots: response.data as Plot[] });
             console.log(response.data);
         } catch (err) {
-            alert("Не удалось получить запланированные участки");
-            console.error("Error fetching plots:", err);
+            alert('Не удалось получить запланированные участки');
+            console.error('Error fetching plots:', err);
         } finally {
             set({ loading: false });
         }
@@ -53,13 +51,12 @@ export const usePlot = create<PlotState>((set) => ({
     getPlotById: async (id: number) => {
         try {
             set({ loading: true });
-            var response = await axios.get(`${BACKEND_URL} + /${id}`);
-            if (response.status === 200)
-                set({ selectedPlot: response.data as Plot });
+            var response = await axios.get(`${BACKEND_URL}/${id}`);
+            if (response.status === 200) set({ selectedPlot: response.data as Plot });
             console.log(response.data);
         } catch (err) {
-            alert("Не удалось получить участок по id");
-            console.error("Error fetching plots:", err);
+            alert('Не удалось получить участок по id');
+            console.error('Error fetching plots:', err);
         } finally {
             set({ loading: false });
         }
@@ -74,12 +71,12 @@ export const usePlot = create<PlotState>((set) => ({
                 set((state) => ({
                     plots: [...state.plots, response.data as Plot],
                 }));
-                alert("Участок создан");
+                alert('Участок создан');
             }
             console.log(response.data);
         } catch (err) {
-            alert("Не удалось создать участок");
-            console.error("Error fetching plots:", err);
+            alert('Не удалось создать участок');
+            console.error('Error fetching plots:', err);
         } finally {
             set({ loading: false });
         }
@@ -93,16 +90,14 @@ export const usePlot = create<PlotState>((set) => ({
             if (response.status === 200) {
                 set((state) => ({
                     selectedPlot: response.data as Plot,
-                    plots: state.plots.map((p) =>
-                        p.id === id ? (response.data as Plot) : p,
-                    ),
+                    plots: state.plots.map((p) => (p.id === id ? (response.data as Plot) : p)),
                 }));
-                alert("Участок изменён");
+                alert('Участок изменён');
             }
             console.log(response.data);
         } catch (err) {
-            alert("Не удалось изменить участок");
-            console.error("Error fetching plots:", err);
+            alert('Не удалось изменить участок');
+            console.error('Error fetching plots:', err);
         }
     },
     deletePlot: async (id: number) => {
@@ -113,12 +108,12 @@ export const usePlot = create<PlotState>((set) => ({
                 set((state) => ({
                     plots: state.plots.filter((p) => p.id !== id),
                 }));
-                alert("Участок удалён");
+                alert('Участок удалён');
             }
             console.log(response.data);
         } catch (err) {
-            alert("Не удалось удалить участок");
-            console.error("Error fetching plots:", err);
+            alert('Не удалось удалить участок');
+            console.error('Error fetching plots:', err);
         } finally {
             set({ loading: false });
         }

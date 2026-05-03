@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Field, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
+import { Button } from '@/components/ui/button';
+import { Field, FieldLabel } from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
 import {
     Select,
     SelectContent,
@@ -11,7 +11,7 @@ import {
     SelectLabel,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 import {
     Table,
     TableBody,
@@ -19,18 +19,18 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table";
-import { usePlan } from "@/store/plan.store";
-import { usePlot } from "@/store/plot.state";
-import { useSubtypeWork } from "@/store/subtype-work.state";
-import { useTypeWork } from "@/store/type-work.state";
-import { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { DeleteDialog } from "./DeleteDialog";
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/constants/pagination";
-import Link from "next/link";
-import { Pages } from "@/constants/page";
-import { Edit } from "lucide-react";
+} from '@/components/ui/table';
+import { usePlan } from '@/store/plan.store';
+import { usePlot } from '@/store/plot.state';
+import { useSubtypeWork } from '@/store/subtype-work.state';
+import { useTypeWork } from '@/store/type-work.state';
+import { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { DeleteDialog } from './DeleteDialog';
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/constants/pagination';
+import Link from 'next/link';
+import { Pages } from '@/constants/page';
+import { Edit } from 'lucide-react';
 
 interface FilterInput {
     plotId: number | null;
@@ -67,7 +67,7 @@ export function PlanTable() {
         },
     });
 
-    const selectedTypeWork = watch("typeWorkId");
+    const selectedTypeWork = watch('typeWorkId');
 
     useEffect(() => {
         const getData = async () => {
@@ -102,8 +102,8 @@ export function PlanTable() {
 
     return (
         <>
-            <div className="p-3 border border-accent-foreground bg-accent-foreground/20 rounded-xl  mb-5">
-                <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
+            <div className='p-3 border border-accent-foreground bg-accent-foreground/20 rounded-xl  mb-5'>
+                <form className='space-y-3' onSubmit={handleSubmit(onSubmit)}>
                     <h1>Фильтры</h1>
 
                     {/* <Input
@@ -116,19 +116,15 @@ export function PlanTable() {
                     <Field>
                         <FieldLabel>Участок</FieldLabel>
                         <Controller
-                            name="plotId"
+                            name='plotId'
                             control={control}
                             render={({ field: { onChange, value } }) => (
                                 <Select
-                                    onValueChange={(val) =>
-                                        onChange(val ? Number(val) : null)
-                                    }
-                                    value={
-                                        value != null ? value.toString() : ""
-                                    }
+                                    onValueChange={(val) => onChange(val ? Number(val) : null)}
+                                    value={value != null ? value.toString() : ''}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder="Выберите участок" />
+                                        <SelectValue placeholder='Выберите участок' />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectGroup>
@@ -147,31 +143,23 @@ export function PlanTable() {
                             )}
                         />
                     </Field>
-                    <div className="flex gap-2">
+                    <div className='flex gap-2'>
                         <Field>
                             <FieldLabel>Вид работ</FieldLabel>
                             <Controller
-                                name="typeWorkId"
+                                name='typeWorkId'
                                 control={control}
                                 render={({ field: { onChange, value } }) => (
                                     <Select
-                                        onValueChange={(val) =>
-                                            onChange(val ? Number(val) : null)
-                                        }
-                                        value={
-                                            value != null
-                                                ? value.toString()
-                                                : ""
-                                        }
+                                        onValueChange={(val) => onChange(val ? Number(val) : null)}
+                                        value={value != null ? value.toString() : ''}
                                     >
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Выберите вид работ" />
+                                            <SelectValue placeholder='Выберите вид работ' />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
-                                                <SelectLabel>
-                                                    Виды работ
-                                                </SelectLabel>
+                                                <SelectLabel>Виды работ</SelectLabel>
                                                 {typeWorks.map((typeWork) => (
                                                     <SelectItem
                                                         key={typeWork.id}
@@ -189,38 +177,28 @@ export function PlanTable() {
                         <Field>
                             <FieldLabel>Тип работ</FieldLabel>
                             <Controller
-                                name="subtypeWorkId"
+                                name='subtypeWorkId'
                                 control={control}
                                 render={({ field: { onChange, value } }) => (
                                     <Select
                                         disabled={!selectedTypeWork}
-                                        onValueChange={(val) =>
-                                            onChange(val ? Number(val) : null)
-                                        }
-                                        value={
-                                            value != null
-                                                ? value.toString()
-                                                : ""
-                                        }
+                                        onValueChange={(val) => onChange(val ? Number(val) : null)}
+                                        value={value != null ? value.toString() : ''}
                                     >
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Выберите тип работ" />
+                                            <SelectValue placeholder='Выберите тип работ' />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
-                                                <SelectLabel>
-                                                    Типы работ
-                                                </SelectLabel>
-                                                {subtypeWorks.map(
-                                                    (subtypeWork) => (
-                                                        <SelectItem
-                                                            key={subtypeWork.id}
-                                                            value={subtypeWork.id.toString()}
-                                                        >
-                                                            {subtypeWork.name}
-                                                        </SelectItem>
-                                                    ),
-                                                )}
+                                                <SelectLabel>Типы работ</SelectLabel>
+                                                {subtypeWorks.map((subtypeWork) => (
+                                                    <SelectItem
+                                                        key={subtypeWork.id}
+                                                        value={subtypeWork.id.toString()}
+                                                    >
+                                                        {subtypeWork.name}
+                                                    </SelectItem>
+                                                ))}
                                             </SelectGroup>
                                         </SelectContent>
                                     </Select>
@@ -230,74 +208,63 @@ export function PlanTable() {
                     </div>
                     <Field>
                         <FieldLabel>Название выработки</FieldLabel>
-                        <Input
-                            placeholder="Название выработки"
-                            {...register("productionName")}
-                        />
+                        <Input placeholder='Название выработки' {...register('productionName')} />
                     </Field>
                     <Field>
                         <FieldLabel>Статус</FieldLabel>
                         <Controller
-                            name="isActive"
+                            name='isActive'
                             control={control}
                             render={({ field: { onChange, value } }) => (
                                 <Select
                                     onValueChange={(val) =>
-                                        onChange(
-                                            val === "" ? null : val === "true",
-                                        )
+                                        onChange(val === '' ? null : val === 'true')
                                     }
-                                    value={
-                                        value != null ? value.toString() : ""
-                                    }
+                                    value={value != null ? value.toString() : ''}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder="Выберите статус" />
+                                        <SelectValue placeholder='Выберите статус' />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectGroup>
                                             <SelectLabel>Статус</SelectLabel>
-                                            <SelectItem value="true">
-                                                Активный
-                                            </SelectItem>
-                                            <SelectItem value="false">
-                                                Неактивный
-                                            </SelectItem>
+                                            <SelectItem value='true'>Активный</SelectItem>
+                                            <SelectItem value='false'>Неактивный</SelectItem>
                                         </SelectGroup>
                                     </SelectContent>
                                 </Select>
                             )}
                         />
                     </Field>
-                    <div className="flex gap-2">
+                    <div className='flex gap-2'>
                         <Field>
                             <FieldLabel>Страница</FieldLabel>
                             <Input
-                                type="number"
+                                type='number'
                                 min={0}
-                                {...register("page", { valueAsNumber: true })}
-                                placeholder="Страница"
+                                {...register('page', { valueAsNumber: true })}
+                                placeholder='Страница'
                             />
                         </Field>
                         <Field>
                             <FieldLabel>Страница</FieldLabel>
                             <Input
-                                type="number"
+                                type='number'
                                 min={1}
-                                {...register("size", { valueAsNumber: true })}
-                                placeholder="Размер страницы"
+                                {...register('size', { valueAsNumber: true })}
+                                placeholder='Размер страницы'
                             />
                         </Field>
                     </div>
-                    <div className="space-x-2">
-                        <Button type="submit">Поиск</Button>
+                    <div className='space-x-2'>
+                        <Button type='submit'>Поиск</Button>
                         <Button
                             onClick={() => {
                                 getAllPlans(DEFAULT_PAGE, DEFAULT_PAGE_SIZE);
                                 reset();
                             }}
-                            variant="secondary"
-                            type="button"
+                            variant='secondary'
+                            type='button'
                         >
                             Сбросить фильтры
                         </Button>
@@ -305,11 +272,11 @@ export function PlanTable() {
                 </form>
             </div>
             {plans.length === 0 ? (
-                <div className="w-full h-40 flex items-center justify-center text-muted-foreground">
+                <div className='w-full h-40 flex items-center justify-center text-muted-foreground'>
                     Нет данных для отображения
                 </div>
             ) : (
-                <Table className="w-full">
+                <Table className='w-full'>
                     <TableHeader>
                         <TableRow>
                             <TableHead>ID</TableHead>
@@ -335,15 +302,9 @@ export function PlanTable() {
                                 <TableCell>{plan.volume}</TableCell>
                                 <TableCell>{plan.startDate}</TableCell>
                                 <TableCell>{plan.endDate}</TableCell>
-                                <TableCell>
-                                    {plan.isActive ? "Active" : "Inactive"}
-                                </TableCell>
-                                <TableCell className="flex justify-end">
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        className="mr-2"
-                                    >
+                                <TableCell>{plan.isActive ? 'Active' : 'Inactive'}</TableCell>
+                                <TableCell className='flex justify-end'>
+                                    <Button variant='outline' size='sm' className='mr-2'>
                                         <Link href={Pages.EDIT_PLAN(plan.id)}>
                                             <Edit size={20} />
                                         </Link>
