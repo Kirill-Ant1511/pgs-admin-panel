@@ -161,33 +161,35 @@ export function EditUserForm({ telegramId }: Props) {
                 </Field>
                 <Field className='-space-y-2 relative'>
                     <FieldLabel htmlFor='plots'>Участки</FieldLabel>
-                    <Input
-                        id='telegraId'
-                        type='text'
-                        placeholder='Название участка'
-                        value={plotName}
-                        onChange={(e) => setPlotName(e.target.value)}
-                        onFocus={() => setInputFocused(true)}
-                        onBlur={() => setInputFocused(false)}
-                    />
-                    {debounceFocus && (
-                        <div className='absolute flex flex-col w-full top-full bg-white border-2 rounded-lg'>
-                            {plots.length !== 0 ? (
-                                plots.map((plot) => (
-                                    <button
-                                        type='button'
-                                        key={plot.id}
-                                        className='hover:bg-zinc-300 transition-all'
-                                        onClick={() => addPlots(plot)}
-                                    >
-                                        {plot.name}
-                                    </button>
-                                ))
-                            ) : (
-                                <div className='text-center'>Участков не найдено</div>
-                            )}
-                        </div>
-                    )}
+                    <div className='relative'>
+                        <Input
+                            id='telegraId'
+                            type='text'
+                            placeholder='Название участка'
+                            value={plotName}
+                            onChange={(e) => setPlotName(e.target.value)}
+                            onFocus={() => setInputFocused(true)}
+                            onBlur={() => setInputFocused(false)}
+                        />
+                        {debounceFocus && (
+                            <div className='absolute flex flex-col w-full top-full bg-white border-2 rounded-lg max-h-40 overflow-y-auto mt-2 z-10'>
+                                {plots.length !== 0 ? (
+                                    plots.map((plot) => (
+                                        <button
+                                            type='button'
+                                            key={plot.id}
+                                            className='hover:bg-zinc-300 transition-all'
+                                            onClick={() => addPlots(plot)}
+                                        >
+                                            {plot.name}
+                                        </button>
+                                    ))
+                                ) : (
+                                    <div className='text-center'>Участков не найдено</div>
+                                )}
+                            </div>
+                        )}
+                    </div>
                     <div className='flex flex-wrap gap-3'>
                         {selectedPlots.length !== 0 &&
                             selectedPlots.map((plot) => (
