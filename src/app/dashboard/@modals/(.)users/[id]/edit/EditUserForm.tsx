@@ -82,12 +82,13 @@ export function EditUserForm({ telegramId }: Props) {
 
     useEffect(() => {
         console.log(selectedUser);
-        setValue('name', selectedUser?.name || '');
-        setValue('surname', selectedUser?.surname || '');
-        setValue('telegramId', selectedUser?.telegramId || '');
-        setValue('role', selectedUser?.role || 'USER');
-        setUserRole(selectedUser?.role || 'USER');
-        setSelectedPlots(selectedUser?.plots || []);
+        if (!selectedUser) return;
+        setValue('name', selectedUser.name || '');
+        setValue('surname', selectedUser.surname || '');
+        setValue('telegramId', selectedUser.telegramId || '');
+        setValue('role', selectedUser.role || 'USER');
+        setUserRole(selectedUser.role || 'USER');
+        setSelectedPlots(selectedUser.plots || []);
     }, [selectedUser]);
     const getData = async () => {
         await getPlots(debounceName);
