@@ -288,6 +288,7 @@ export function PlanTable() {
                             <TableHead>Дата начала работ</TableHead>
                             <TableHead>Дата конца работ</TableHead>
                             <TableHead>Статус</TableHead>
+                            <TableHead>Станки</TableHead>
                             <TableHead>Действия</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -303,6 +304,9 @@ export function PlanTable() {
                                 <TableCell>{plan.startDate}</TableCell>
                                 <TableCell>{plan.endDate}</TableCell>
                                 <TableCell>{plan.isActive ? 'Active' : 'Inactive'}</TableCell>
+                                <TableCell className='text-center'>
+                                    {plan.machines.length}
+                                </TableCell>
                                 <TableCell className='flex justify-end'>
                                     <Button variant='outline' size='sm' className='mr-2'>
                                         <Link href={Pages.EDIT_PLAN(plan.id)}>

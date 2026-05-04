@@ -1,6 +1,7 @@
-import { Plan } from "@/types/plan.type";
-import axios from "axios";
-import { create } from "zustand";
+import { Machine } from '@/types/machine.type';
+import { Plan } from '@/types/plan.type';
+import axios from 'axios';
+import { create } from 'zustand';
 
 interface PlanState {
     plans: Plan[];
@@ -39,6 +40,7 @@ interface PlanState {
         subtypeWorkId: number,
         volume: number,
         isActive: boolean,
+        machines: number[],
         productionName?: string | null,
         startDate?: Date | null,
         endDate?: Date | null,
@@ -46,7 +48,7 @@ interface PlanState {
     deletePlan: (id: number) => Promise<void>;
 }
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_HOST + "/plan";
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_HOST + '/plan';
 
 export const usePlan = create<PlanState>((set) => ({
     plans: [],
@@ -80,7 +82,7 @@ export const usePlan = create<PlanState>((set) => ({
                 });
             console.log(response.data);
         } catch (error) {
-            alert("Не удалось получить планы");
+            alert('Не удалось получить планы');
             console.log(error);
         } finally {
             set({ loading: false });
@@ -108,7 +110,7 @@ export const usePlan = create<PlanState>((set) => ({
                 set({ selectedPlan: response.data as Plan });
             }
         } catch (error) {
-            alert("Не удалось получить план по составному ключу");
+            alert('Не удалось получить план по составному ключу');
             console.log(error);
         } finally {
             set({ loading: false });
@@ -118,11 +120,10 @@ export const usePlan = create<PlanState>((set) => ({
         try {
             set({ loading: true });
             let response = await axios.get(`${BACKEND_URL}/${id}`);
-            if (response.status === 200)
-                set({ selectedPlan: response.data as Plan });
+            if (response.status === 200) set({ selectedPlan: response.data as Plan });
             console.log(response.data);
         } catch (error) {
-            alert("Не удалось получить план по id");
+            alert('Не удалось получить план по id');
             console.log(error);
         } finally {
             set({ loading: false });
@@ -153,10 +154,10 @@ export const usePlan = create<PlanState>((set) => ({
                 set((state) => ({
                     plans: [...state.plans, response.data as Plan],
                 }));
-                alert("План создан");
+                alert('План создан');
             }
         } catch (error) {
-            alert("Не удалось создать план");
+            alert('Не удалось создать план');
             console.log(error);
         } finally {
             set({ loading: false });
@@ -169,6 +170,7 @@ export const usePlan = create<PlanState>((set) => ({
         subtypeWorkId: number,
         volume: number,
         isActive: boolean,
+        machines: number[],
         productionName?: string | null,
         startDate?: Date | null,
         endDate?: Date | null,
@@ -184,19 +186,18 @@ export const usePlan = create<PlanState>((set) => ({
                 startDate: startDate,
                 endDate: endDate,
                 isActive: isActive,
+                machineIds: machines,
             };
             const response = await axios.patch(`${BACKEND_URL}/${id}`, data);
             if (response.status === 200) {
                 set((state) => ({
                     selectedPlan: response.data as Plan,
-                    plans: state.plans.map((p) =>
-                        p.id === id ? (response.data as Plan) : p,
-                    ),
+                    plans: state.plans.map((p) => (p.id === id ? (response.data as Plan) : p)),
                 }));
-                alert("План изменён");
+                alert('План изменён');
             }
         } catch (error) {
-            alert("Не удалось изменить план");
+            alert('Не удалось изменить план');
             console.log(error);
         } finally {
             set({ loading: false });
@@ -210,10 +211,10 @@ export const usePlan = create<PlanState>((set) => ({
                 set((state) => ({
                     plans: state.plans.filter((p) => p.id !== id),
                 }));
-                alert("План удалён");
+                alert('План удалён');
             }
         } catch (error) {
-            alert("Не удалось удалить план");
+            alert('Не удалось удалить план');
             console.log(error);
         } finally {
             set({ loading: false });

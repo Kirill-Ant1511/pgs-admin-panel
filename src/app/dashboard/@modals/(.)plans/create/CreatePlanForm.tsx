@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Field, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { ModalBackground } from "@/components/ui/modal-background";
+import { Button } from '@/components/ui/button';
+import { Field, FieldLabel } from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
+import { ModalBackground } from '@/components/ui/modal-background';
 import {
     Select,
     SelectContent,
@@ -12,16 +12,18 @@ import {
     SelectLabel,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "@/constants/pagination";
-import { usePlan } from "@/store/plan.store";
-import { usePlot } from "@/store/plot.state";
-import { useSubtypeWork } from "@/store/subtype-work.state";
-import { useTypeWork } from "@/store/type-work.state";
-import { X } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
+} from '@/components/ui/select';
+import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@/constants/pagination';
+import { useMachine } from '@/store/machine.store';
+import { usePlan } from '@/store/plan.store';
+import { usePlot } from '@/store/plot.state';
+import { useSubtypeWork } from '@/store/subtype-work.state';
+import { useTypeWork } from '@/store/type-work.state';
+import { Machine } from '@/types/machine.type';
+import { X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 
 interface Input {
     plotId: number;
@@ -39,6 +41,25 @@ export function CreatePlanForm() {
     const { typeWorks, getAllTypeWorks } = useTypeWork();
     const { subtypeWorks, getSubtypeWorkByTypeWorkId } = useSubtypeWork();
     const { getAllPlans, createPlan } = usePlan();
+    const [machineName, setMachineName] = useState('');
+    const { getAllMachines, machines } = useMachine();
+    const [selectedMachines, setSelectedMachines] = useState<Machine[]>([]);
+    const [isFocus, setIsFocus] = useState(false);
+    const addSelectedMachine = (machine: Machine) => {
+        if (!selectedMachines.some((m) => m.id === machine.id)) {
+            setSelectedMachines([...selectedMachines, machine]);
+        }
+    };
+    const removeSelectedMachine = (machineId: number) => {
+        setSelectedMachines(selectedMachines.filter((m) => m.id !== machineId));
+    };
+
+    useEffect(() => {
+        if (machineName.trim() !== '') {
+            getAllMachines(machineName);
+        }
+    }, [machineName]);
+
     const {
         register,
         handleSubmit,
@@ -60,11 +81,12 @@ export function CreatePlanForm() {
     const closeModal = () => {
         router.back();
     };
-    const selectTypeWorkId = watch("typeWorkId");
+    const selectTypeWorkId = watch('typeWorkId');
 
     useEffect(() => {
         getPlots();
         getAllTypeWorks();
+        getAllMachines('');
     }, []);
 
     useEffect(() => {
@@ -75,7 +97,7 @@ export function CreatePlanForm() {
     }, [selectTypeWorkId]);
 
     const onSubmit = async (data: Input) => {
-        if (data.productionName === "") data.productionName = null;
+        if (data.productionName === '') data.productionName = null;
         data.volume = Number(data.volume);
         await createPlan(
             data.plotId,
@@ -92,36 +114,33 @@ export function CreatePlanForm() {
 
     return (
         <ModalBackground>
-            <div className="flex w-full justify-between items-center">
+            <div className='flex w-full justify-between items-center'>
                 <h1>Создание плана</h1>
                 <Button onClick={closeModal}>
                     <X size={22} />
                 </Button>
             </div>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            <form onSubmit={handleSubmit(onSubmit)} className='space-y-5'>
                 <Field>
                     <FieldLabel>Участок</FieldLabel>
                     <Controller
-                        name="plotId"
+                        name='plotId'
                         control={control}
-                        rules={{ required: "Выберите участок" }}
+                        rules={{ required: 'Выберите участок' }}
                         render={({ field: { onChange, value } }) => (
                             <Select
                                 onValueChange={(val) => onChange(Number(val))} // ← преобразуем строку в число
                                 value={value?.toString()} // ← Select принимает string, поэтому конвертируем
                             >
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Выберите участок" />
+                                    <SelectValue placeholder='Выберите участок' />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectGroup>
                                         <SelectLabel>Участки</SelectLabel>
                                         {plots.map((plot) => (
-                                            <SelectItem
-                                                key={plot.id}
-                                                value={plot.id.toString()}
-                                            >
+                                            <SelectItem key={plot.id} value={plot.id.toString()}>
                                                 {plot.name}
                                             </SelectItem>
                                         ))}
@@ -131,19 +150,19 @@ export function CreatePlanForm() {
                         )}
                     />
                 </Field>
-                <Field orientation="responsive">
+                <Field orientation='responsive'>
                     <FieldLabel>Вид работ</FieldLabel>
                     <Controller
-                        name="typeWorkId"
+                        name='typeWorkId'
                         control={control}
-                        rules={{ required: "Выберите вид работ" }}
+                        rules={{ required: 'Выберите вид работ' }}
                         render={({ field: { onChange, value } }) => (
                             <Select
                                 onValueChange={(val) => onChange(Number(val))} // ← преобразуем строку в число
                                 value={value?.toString()} // ← Select принимает string, поэтому конвертируем
                             >
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Выберите вид работ" />
+                                    <SelectValue placeholder='Выберите вид работ' />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectGroup>
@@ -165,9 +184,9 @@ export function CreatePlanForm() {
                 <Field>
                     <FieldLabel>Тип работ</FieldLabel>
                     <Controller
-                        name="subtypeWorkId"
+                        name='subtypeWorkId'
                         control={control}
-                        rules={{ required: "Выберите тип работ" }}
+                        rules={{ required: 'Выберите тип работ' }}
                         render={({ field: { onChange, value } }) => (
                             <Select
                                 disabled={!selectTypeWorkId}
@@ -175,7 +194,7 @@ export function CreatePlanForm() {
                                 value={value?.toString()} // ← Select принимает string, поэтому конвертируем
                             >
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Выберите тип работ" />
+                                    <SelectValue placeholder='Выберите тип работ' />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectGroup>
@@ -195,55 +214,91 @@ export function CreatePlanForm() {
                     />
                 </Field>
                 <Field>
-                    <FieldLabel htmlFor="productionName">
+                    <FieldLabel htmlFor='productionName'>
                         Название выработки(Необязательно)
                     </FieldLabel>
                     <Input
-                        id="productionName"
-                        type="text"
-                        {...register("productionName", { required: false })}
-                        placeholder="Название выработки"
+                        id='productionName'
+                        type='text'
+                        {...register('productionName', { required: false })}
+                        placeholder='Название выработки'
                     />
                 </Field>
                 <Field>
-                    <FieldLabel htmlFor="volume">Объём работ</FieldLabel>
+                    <FieldLabel htmlFor='volume'>Объём работ</FieldLabel>
                     <Input
-                        id="volume"
-                        type="number"
-                        step="0.01"
-                        {...register("volume", { required: true })}
-                        placeholder="Объём работ"
+                        id='volume'
+                        type='number'
+                        step='0.01'
+                        {...register('volume', { required: true })}
+                        placeholder='Объём работ'
                     />
                 </Field>
-                <div className="flex gap-2">
+                <div className='flex gap-2'>
                     <Field>
-                        <FieldLabel htmlFor="startDate">
-                            Начальная дата(Необязательно)
-                        </FieldLabel>
+                        <FieldLabel htmlFor='startDate'>Начальная дата(Необязательно)</FieldLabel>
                         <Input
-                            id="startDate"
-                            type="date"
-                            {...register("startDate", { required: false })}
+                            id='startDate'
+                            type='date'
+                            {...register('startDate', { required: false })}
                         />
                     </Field>
                     <Field>
-                        <FieldLabel htmlFor="endDate">
-                            Конечная дата(Необязательно)
-                        </FieldLabel>
+                        <FieldLabel htmlFor='endDate'>Конечная дата(Необязательно)</FieldLabel>
                         <Input
-                            id="endDate"
-                            type="date"
-                            {...register("endDate", { required: false })}
+                            id='endDate'
+                            type='date'
+                            {...register('endDate', { required: false })}
                         />
                     </Field>
                 </div>
+                <Field>
+                    <FieldLabel>Станки</FieldLabel>
+                    <div className='relative'>
+                        <Input
+                            type='text'
+                            onFocus={() => setIsFocus(true)}
+                            onBlur={() => setIsFocus(false)}
+                            value={machineName}
+                            onChange={(e) => setMachineName(e.target.value)}
+                        />
+                        <div className='absolute top-full mt-2 w-full z-10 bg-white rounded'>
+                            {isFocus && machines.length > 0 && (
+                                <div className='border rounded mt-1 max-h-40 overflow-y-auto'>
+                                    {machines.map((machine) => (
+                                        <div
+                                            key={machine.id}
+                                            className='px-2 py-1 hover:bg-gray-200 cursor-pointer'
+                                            onMouseDown={() => addSelectedMachine(machine)} // Используем onMouseDown, чтобы событие сработало до onBlur
+                                        >
+                                            {machine.name}
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <div>
+                        {selectedMachines.map((machine) => (
+                            <div
+                                key={machine.id}
+                                className='inline-flex items-center px-2 py-1 bg-gray-200 rounded-full mr-2 mt-2'
+                            >
+                                {machine.name}
+                                <X
+                                    size={16}
+                                    className='ml-1 cursor-pointer'
+                                    onClick={() => removeSelectedMachine(machine.id)}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </Field>
                 {errors.plotId && (
-                    <p className="text-red-500 text-sm mt-1">
-                        {errors.plotId.message}
-                    </p>
+                    <p className='text-red-500 text-sm mt-1'>{errors.plotId.message}</p>
                 )}
 
-                <Button type="submit" className="mt-4">
+                <Button type='submit' className='mt-4'>
                     Создать
                 </Button>
             </form>

@@ -86,8 +86,8 @@ export function EditUserForm({ telegramId }: Props) {
         setValue('name', selectedUser.name || '');
         setValue('surname', selectedUser.surname || '');
         setValue('telegramId', selectedUser.telegramId || '');
-        setValue('role', selectedUser.role || 'USER');
         setUserRole(selectedUser.role || 'USER');
+        setValue('role', userRole);
         setSelectedPlots(selectedUser.plots || []);
     }, [selectedUser]);
     const getData = async () => {

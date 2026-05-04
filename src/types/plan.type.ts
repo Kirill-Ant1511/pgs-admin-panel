@@ -1,3 +1,5 @@
+import { Machine } from './machine.type';
+
 export type Plan = {
     id: number;
     plot: {
@@ -21,4 +23,5 @@ export type Plan = {
     startDate: string;
     endDate: string;
     isActive: boolean;
+    machines: Machine[];
 };
