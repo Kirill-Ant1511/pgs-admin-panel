@@ -23,4 +23,8 @@ export class Pages {
     static USERS = this.DASHBOARD + '/users';
     static CREATE_USER = this.USERS + '/create';
     static EDIT_USER = (id: string) => `${this.USERS}/${id}/edit`;
+
+    static MACHINES = this.DASHBOARD + '/machines';
+    static CREATE_MACHINE = this.MACHINES + '/create';
+    static EDIT_MACHINE = (id: number) => `${this.MACHINES}/${id}/edit`;
 }

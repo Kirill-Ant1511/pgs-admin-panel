@@ -1,6 +1,6 @@
 import { Pages } from '@/constants/page';
 import { MenuItem } from '@/types/menu.type';
-import { Files, FileText, Hammer, Layers, Map, User } from 'lucide-react';
+import { Drill, Files, FileText, Hammer, Layers, Map, User } from 'lucide-react';
 
 export const MENU: MenuItem[] = [
     {
@@ -32,5 +32,10 @@ export const MENU: MenuItem[] = [
         name: 'Отчёты',
         path: Pages.REPORTS,
         icon: Files,
+    },
+    {
+        name: 'Станки',
+        path: Pages.MACHINES,
+        icon: Drill,
     },
 ];

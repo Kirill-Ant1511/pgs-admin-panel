@@ -90,6 +90,7 @@ export function CreatePlanForm() {
     }, []);
 
     useEffect(() => {
+        if (!selectTypeWorkId) return;
         const getSubtypeWork = async () => {
             await getSubtypeWorkByTypeWorkId(selectTypeWorkId);
         };

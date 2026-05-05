@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Field, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { ModalBackground } from "@/components/ui/modal-background";
+import { Button } from '@/components/ui/button';
+import { Field, FieldLabel } from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
+import { ModalBackground } from '@/components/ui/modal-background';
 import {
     Select,
     SelectContent,
@@ -12,16 +12,17 @@ import {
     SelectLabel,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
-import { usePlan } from "@/store/plan.store";
-import { usePlot } from "@/store/plot.state";
-import { useReport } from "@/store/report.store";
-import { useSubtypeWork } from "@/store/subtype-work.state";
-import { useTypeWork } from "@/store/type-work.state";
-import { X } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
+} from '@/components/ui/select';
+import { useMachine } from '@/store/machine.store';
+import { usePlan } from '@/store/plan.store';
+import { usePlot } from '@/store/plot.state';
+import { useReport } from '@/store/report.store';
+import { useSubtypeWork } from '@/store/subtype-work.state';
+import { useTypeWork } from '@/store/type-work.state';
+import { X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 
 interface Input {
     plotId: number;
@@ -42,12 +43,13 @@ export function CreateReportForm() {
     const { typeWorks, getPlaningTypeWorks } = useTypeWork();
     const { subtypeWorks, getPlaningSubtypeWorks } = useSubtypeWork();
     const { plans, selectedPlan, getPlanByFK, getAllPlans } = usePlan();
-    const { register, control, handleSubmit, watch } = useForm<Input>({
+
+    const { register, control, handleSubmit, watch, setValue } = useForm<Input>({
         defaultValues: {
-            productionName: " ",
+            productionName: ' ',
             fact: 0,
-            date: new Date().toISOString().split("T")[0],
-            whoSend: "",
+            date: new Date().toISOString().split('T')[0],
+            whoSend: '',
             machine: null,
             comment: null,
         },
@@ -57,15 +59,15 @@ export function CreateReportForm() {
             await getPlaningPlots();
         };
         getData();
-        document.body.classList.add("overflow-hidden");
+        document.body.classList.add('overflow-hidden');
         return () => {
-            document.body.classList.remove("overflow-hidden");
+            document.body.classList.remove('overflow-hidden');
         };
     }, []);
 
-    const selectedPlotId = watch("plotId");
-    const selectedTypeWorkId = watch("typeWorkId");
-    const selectedSubtypeWorkId = watch("subtypeWorkId");
+    const selectedPlotId = watch('plotId');
+    const selectedTypeWorkId = watch('typeWorkId');
+    const selectedSubtypeWorkId = watch('subtypeWorkId');
 
     useEffect(() => {
         const getTypeWorks = async () => {
@@ -79,10 +81,7 @@ export function CreateReportForm() {
     useEffect(() => {
         const getSubtypeWorks = async () => {
             if (selectedTypeWorkId) {
-                await getPlaningSubtypeWorks(
-                    selectedPlotId,
-                    selectedTypeWorkId,
-                );
+                await getPlaningSubtypeWorks(selectedPlotId, selectedTypeWorkId);
             }
         };
         getSubtypeWorks();
@@ -106,8 +105,7 @@ export function CreateReportForm() {
     }, [selectedSubtypeWorkId]);
 
     const onSubmit = async (data: Input) => {
-        data.productionName =
-            data.productionName === " " ? "" : data.productionName;
+        data.productionName = data.productionName === ' ' ? '' : data.productionName;
         await getPlanByFK(
             data.plotId,
             data.typeWorkId,
@@ -133,7 +131,7 @@ export function CreateReportForm() {
                 data.machine,
                 data.comment,
             );
-        } else alert("План не найден, невозможно отправить отчет");
+        } else alert('План не найден, невозможно отправить отчет');
         closeModal();
     };
 
@@ -142,35 +140,32 @@ export function CreateReportForm() {
     };
     return (
         <ModalBackground>
-            <div className="flex w-full justify-between items-center">
+            <div className='flex w-full justify-between items-center'>
                 <h1>Создание отчёта</h1>
                 <Button onClick={closeModal}>
                     <X size={22} />
                 </Button>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+            <form onSubmit={handleSubmit(onSubmit)} className='space-y-3'>
                 <Field>
                     <FieldLabel>Участок</FieldLabel>
                     <Controller
-                        name="plotId"
+                        name='plotId'
                         control={control}
-                        rules={{ required: "Выберите участок" }}
+                        rules={{ required: 'Выберите участок' }}
                         render={({ field: { onChange, value } }) => (
                             <Select
                                 onValueChange={(val) => onChange(Number(val))} // ← преобразуем строку в число
                                 value={value?.toString()} // ← Select принимает string, поэтому конвертируем
                             >
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Выберите участок" />
+                                    <SelectValue placeholder='Выберите участок' />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectGroup>
                                         <SelectLabel>Участки</SelectLabel>
                                         {plots.map((plot) => (
-                                            <SelectItem
-                                                key={plot.id}
-                                                value={plot.id.toString()}
-                                            >
+                                            <SelectItem key={plot.id} value={plot.id.toString()}>
                                                 {plot.name}
                                             </SelectItem>
                                         ))}
@@ -180,12 +175,12 @@ export function CreateReportForm() {
                         )}
                     />
                 </Field>
-                <Field orientation="responsive">
+                <Field orientation='responsive'>
                     <FieldLabel>Вид работ</FieldLabel>
                     <Controller
-                        name="typeWorkId"
+                        name='typeWorkId'
                         control={control}
-                        rules={{ required: "Выберите вид работ" }}
+                        rules={{ required: 'Выберите вид работ' }}
                         render={({ field: { onChange, value } }) => (
                             <Select
                                 disabled={!selectedPlotId}
@@ -193,7 +188,7 @@ export function CreateReportForm() {
                                 value={value?.toString()} // ← Select принимает string, поэтому конвертируем
                             >
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Выберите вид работ" />
+                                    <SelectValue placeholder='Выберите вид работ' />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectGroup>
@@ -215,9 +210,9 @@ export function CreateReportForm() {
                 <Field>
                     <FieldLabel>Тип работ</FieldLabel>
                     <Controller
-                        name="subtypeWorkId"
+                        name='subtypeWorkId'
                         control={control}
-                        rules={{ required: "Выберите тип работ" }}
+                        rules={{ required: 'Выберите тип работ' }}
                         render={({ field: { onChange, value } }) => (
                             <Select
                                 disabled={!selectedTypeWorkId}
@@ -225,7 +220,7 @@ export function CreateReportForm() {
                                 value={value?.toString()} // ← Select принимает string, поэтому конвертируем
                             >
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Выберите тип работ" />
+                                    <SelectValue placeholder='Выберите тип работ' />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectGroup>
@@ -247,7 +242,7 @@ export function CreateReportForm() {
                 <Field>
                     <FieldLabel>Название выработки</FieldLabel>
                     <Controller
-                        name="productionName"
+                        name='productionName'
                         control={control}
                         render={({ field: { onChange, value } }) => (
                             <Select
@@ -256,21 +251,14 @@ export function CreateReportForm() {
                                 onValueChange={onChange}
                             >
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Выберите название выработки" />
+                                    <SelectValue placeholder='Выберите название выработки' />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectGroup>
-                                        <SelectLabel>
-                                            Названия выработок
-                                        </SelectLabel>
-                                        <SelectItem value={" "}>
-                                            Без выработки
-                                        </SelectItem>
+                                        <SelectLabel>Названия выработок</SelectLabel>
+                                        <SelectItem value={' '}>Без выработки</SelectItem>
                                         {plans.map((plan) => {
-                                            if (
-                                                !plan.productionName ||
-                                                plan.productionName === ""
-                                            )
+                                            if (!plan.productionName || plan.productionName === '')
                                                 return null;
                                             return (
                                                 <SelectItem
@@ -289,37 +277,30 @@ export function CreateReportForm() {
                 </Field>
                 <Field>
                     <FieldLabel>
-                        Факт выработки(в{" "}
-                        {subtypeWorks.find(
-                            (sw) => sw.id === selectedSubtypeWorkId,
-                        )?.unitMetering || "ед"}
+                        Факт выработки(в{' '}
+                        {subtypeWorks.find((sw) => sw.id === selectedSubtypeWorkId)?.unitMetering ||
+                            'ед'}
                         )
                     </FieldLabel>
-                    <Input
-                        type="number"
-                        {...register("fact", { required: true, min: 1 })}
-                    />
+                    <Input type='number' {...register('fact', { required: true, min: 1 })} />
                 </Field>
                 <Field>
                     <FieldLabel>Дата выработки(необязательно)</FieldLabel>
-                    <Input type="date" {...register("date")} />
+                    <Input type='date' {...register('date')} />
                 </Field>
                 <Field>
                     <FieldLabel>Кто отправил</FieldLabel>
-                    <Input
-                        type="text"
-                        {...register("whoSend", { required: true })}
-                    />
+                    <Input type='text' {...register('whoSend', { required: true })} />
                 </Field>
                 <Field>
                     <FieldLabel>Машина (необязательно)</FieldLabel>
-                    <Input type="text" {...register("machine")} />
+                    <Input type='text' {...register('machine')} />
                 </Field>
                 <Field>
                     <FieldLabel>Комментарий (необязательно)</FieldLabel>
-                    <Input type="text" {...register("comment")} />
+                    <Input type='text' {...register('comment')} />
                 </Field>
-                <Button type="submit">Отправить</Button>
+                <Button type='submit'>Отправить</Button>
             </form>
         </ModalBackground>
     );
