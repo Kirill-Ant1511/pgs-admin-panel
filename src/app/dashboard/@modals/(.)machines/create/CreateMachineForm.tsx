@@ -33,7 +33,7 @@ export function CreateMachineForm() {
     };
 
     useEffect(() => {
-        document.body.classList.add('overflow-hidden');
+        document.body.classList.add('overflow-scrol');
 
         return () => {
             document.body.classList.remove('overflow-hidden');

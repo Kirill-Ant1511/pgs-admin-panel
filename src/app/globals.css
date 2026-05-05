@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 @tailwind utilities;
 
 @custom-variant dark (&:is(.dark *));
@@ -127,4 +127,18 @@
 
 body {
     background: var(--muted);
+}
+
+@layer components {
+    .no-scrollbar {
+        /* Скрытие для Firefox */
+        scrollbar-width: none;
+        /* Скрытие для Internet Explorer/Edge */
+        -ms-overflow-style: none;
+    }
+
+    /* Скрытие для Chrome, Safari, Opera */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
 }

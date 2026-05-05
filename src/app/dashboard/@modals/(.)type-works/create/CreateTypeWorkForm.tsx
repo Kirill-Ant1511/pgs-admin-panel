@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Field, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { ModalBackground } from "@/components/ui/modal-background";
-import { useTypeWork } from "@/store/type-work.state";
-import { X } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { Button } from '@/components/ui/button';
+import { Field, FieldLabel } from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
+import { ModalBackground } from '@/components/ui/modal-background';
+import { useTypeWork } from '@/store/type-work.state';
+import { X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 
 interface Input {
     code: string;
@@ -27,7 +27,7 @@ export function CreateTypeWorkForm() {
     } = useForm<Input>();
 
     const closeModal = () => {
-        document.body.classList.remove("overflow-hidden");
+        document.body.classList.remove('overflow-hidden');
         router.back();
     };
 
@@ -37,42 +37,42 @@ export function CreateTypeWorkForm() {
     };
 
     useEffect(() => {
-        document.body.classList.add("overflow-hidden");
+        document.body.classList.add('overflow-hidden');
+
+        return () => {
+            document.body.classList.remove('overflow-hidden');
+        };
     }, []);
 
     return (
         <ModalBackground>
-            <div className="flex w-full justify-between items-center">
+            <div className='flex w-full justify-between items-center'>
                 <h1>Создания вида работы</h1>
                 <Button onClick={closeModal}>
                     <X size={22} />
                 </Button>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)} className="mt-5 space-y-3">
-                <Field className="-space-y-2">
-                    <FieldLabel htmlFor="code">
-                        Код вида работ(Обязательно)
-                    </FieldLabel>
+            <form onSubmit={handleSubmit(onSubmit)} className='mt-5 space-y-3'>
+                <Field className='-space-y-2'>
+                    <FieldLabel htmlFor='code'>Код вида работ(Обязательно)</FieldLabel>
                     <Input
-                        id="code"
-                        type="text"
-                        {...register("code", { required: true })}
-                        placeholder="Код вида работ..."
+                        id='code'
+                        type='text'
+                        {...register('code', { required: true })}
+                        placeholder='Код вида работ...'
                     />
                 </Field>
-                <Field className="-space-y-2">
-                    <FieldLabel htmlFor="name">
-                        Название вида работ(Обязательно)
-                    </FieldLabel>
+                <Field className='-space-y-2'>
+                    <FieldLabel htmlFor='name'>Название вида работ(Обязательно)</FieldLabel>
                     <Input
-                        id="name"
-                        type="text"
-                        {...register("name", { required: true })}
-                        placeholder="Название вида работ..."
+                        id='name'
+                        type='text'
+                        {...register('name', { required: true })}
+                        placeholder='Название вида работ...'
                     />
                 </Field>
 
-                <Button type="submit">Создать</Button>
+                <Button type='submit'>Создать</Button>
             </form>
         </ModalBackground>
     );
