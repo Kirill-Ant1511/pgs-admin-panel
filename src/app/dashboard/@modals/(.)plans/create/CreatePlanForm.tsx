@@ -99,7 +99,9 @@ export function CreatePlanForm() {
 
     const onSubmit = async (data: Input) => {
         if (data.productionName === '') data.productionName = null;
+        console.log(data);
         data.volume = Number(data.volume);
+        const machineIds = selectedMachines.map((machine) => machine.id);
         await createPlan(
             data.plotId,
             data.typeWorkId,
@@ -108,6 +110,7 @@ export function CreatePlanForm() {
             data.productionName,
             data.startDate,
             data.endDate,
+            machineIds,
         );
         await getAllPlans(DEFAULT_PAGE, DEFAULT_PAGE_SIZE);
         closeModal();

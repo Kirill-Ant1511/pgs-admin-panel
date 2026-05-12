@@ -32,6 +32,7 @@ interface PlanState {
         productionName?: string | null,
         startDate?: Date | null,
         endDate?: Date | null,
+        machineIds?: number[],
     ) => Promise<void>;
     updatePlan: (
         id: number,
@@ -137,6 +138,7 @@ export const usePlan = create<PlanState>((set) => ({
         productionName?: string | null,
         startDate?: Date | null,
         endDate?: Date | null,
+        machineIds?: number[],
     ) => {
         try {
             set({ loading: true });
@@ -148,6 +150,7 @@ export const usePlan = create<PlanState>((set) => ({
                 productionName: productionName,
                 startDate: startDate,
                 endDate: endDate,
+                machineIds: machineIds,
             };
             const response = await axios.post(BACKEND_URL, data);
             if (response.status === 200) {
